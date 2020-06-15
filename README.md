@@ -56,7 +56,7 @@ python main.py --dataset celebA-HQ_gender --phase test
 ```
 
 
-## Tensorflow results
+## Tensorflow results (100K)
 ### Latent-guided synthesis
 #### CelebA-HQ
 <div align="center">
