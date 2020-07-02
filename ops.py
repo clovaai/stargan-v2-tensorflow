@@ -262,7 +262,6 @@ class SpectralNormalization(tf.keras.layers.Wrapper):
     def call(self, inputs, training=None, mask=None):
         self.update_weights()
         output = self.layer(inputs)
-        # self.restore_weights()  # Restore weights because of this formula "W = W - alpha * W_SN`"
         return output
 
     def update_weights(self):
@@ -282,11 +281,7 @@ class SpectralNormalization(tf.keras.layers.Wrapper):
         sigma = tf.matmul(tf.matmul(v_hat, w_reshaped), tf.transpose(u_hat))
         self.u.assign(u_hat)
 
-        self.layer.kernel = self.w / sigma
-
-    def restore_weights(self):
-
-        self.layer.kernel = self.w
+        self.layer.kernel.assign(self.w / sigma)
 
 ##################################################################################
 # Activation Function
