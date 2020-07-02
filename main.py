@@ -22,7 +22,6 @@ def parse_args():
     parser.add_argument('--dataset', type=str, default='celeba_hq_gender', help='dataset_name')
     parser.add_argument('--iteration', type=int, default=100000, help='The number of training iterations')
     parser.add_argument('--ds_iter', type=int, default=100000, help='Number of iterations to optimize diversity sensitive loss')
-    parser.add_argument('--nsml', type=str2bool, default=True, help='NSML use or not')
 
     parser.add_argument('--batch_size', type=int, default=8, help='The size of batch size')  # each gpu
     parser.add_argument('--print_freq', type=int, default=1000, help='The number of image_print_freq')
