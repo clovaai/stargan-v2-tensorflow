@@ -141,7 +141,7 @@ class StarGAN_v2():
             self.img_and_domain_iter = iter(img_and_domain)
 
             """ Network """
-            self.generator = Generator(self.img_size, self.style_dim, max_conv_dim=self.hidden_dim, sn=False, name='Generator')
+            self.generator = Generator(self.img_size, self.img_ch, self.style_dim, max_conv_dim=self.hidden_dim, sn=False, name='Generator')
             self.mapping_network = MappingNetwork(self.style_dim, self.hidden_dim, self.num_domains, sn=False, name='MappingNetwork')
             self.style_encoder = StyleEncoder(self.img_size, self.style_dim, self.num_domains, max_conv_dim=self.hidden_dim, sn=False, name='StyleEncoder')
             self.discriminator = Discriminator(self.img_size, self.num_domains, max_conv_dim=self.hidden_dim, sn=self.sn, name='Discriminator')
