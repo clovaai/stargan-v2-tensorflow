@@ -91,7 +91,7 @@ class MappingNetwork(tf.keras.Model):
 
         for i in range(3):
             layers += [FullyConnected(units=self.hidden_dim, sn=self.sn, name='shared_fc_' + str(i))]
-            layers += [Relu()]
+            layers += [Relu(name='relu'+str(i))]
 
         shared_layers = Sequential(layers)
 
@@ -101,7 +101,7 @@ class MappingNetwork(tf.keras.Model):
         for n_d in range(self.num_domains):
             for i in range(3):
                 layers += [FullyConnected(units=self.hidden_dim, sn=self.sn, name='domain_{}_unshared_fc_{}'.format(n_d, i))]
-                layers += [Relu()]
+                layers += [Relu(name='domain_{}relu{}'.format(n_d, i))]
             layers += [FullyConnected(units=self.style_dim, sn=self.sn, name='domain_{}_style_fc'.format(n_d))]
 
             unshared_layers += [Sequential(layers)]
@@ -154,7 +154,7 @@ class StyleEncoder(tf.keras.Model):
 
         blocks += [Leaky_Relu(alpha=0.2)]
         blocks += [Conv(channels=ch_out, kernel=4, stride=1, pad=0, sn=self.sn, name='conv')]
-        blocks += [Leaky_Relu(alpha=0.2)]
+        blocks += [Leaky_Relu(alpha=0.2,name='leaky_relu2')]
 
         shared_layers = Sequential(blocks)
 
@@ -212,10 +212,10 @@ class Discriminator(tf.keras.Model):
 
             ch_in = ch_out
 
-        blocks += [Leaky_Relu(alpha=0.2)]
+        blocks += [Leaky_Relu(alpha=0.2,name='leaky_relu3')]
         blocks += [Conv(channels=ch_out, kernel=4, stride=1, pad=0, sn=self.sn, name='conv_0')]
 
-        blocks += [Leaky_Relu(alpha=0.2)]
+        blocks += [Leaky_Relu(alpha=0.2,name='leaky_relu4')]
         blocks += [Conv(channels=self.num_domains, kernel=1, stride=1, sn=self.sn, name='conv_1')]
 
         encoder = Sequential(blocks)
