@@ -12,6 +12,7 @@ import tensorflow as tf
 import tensorflow_addons as tfa
 from utils import pytorch_kaiming_weight_factor
 import math
+import uuid
 
 ##################################################################################
 # Initialization
@@ -133,7 +134,7 @@ class ResBlock(tf.keras.layers.Layer):
     def residual(self, x):
         if self.normalize:
             x = self.ins_norm_0(x)
-        x = Leaky_Relu(x, alpha=0.2, name='relu_1')
+        x = Leaky_Relu(x, alpha=0.2, name=str(uuid.uuid4()))
         x = self.conv_0(x)
 
         if self.downsample:
@@ -141,7 +142,7 @@ class ResBlock(tf.keras.layers.Layer):
         if self.normalize:
             x = self.ins_norm_1(x)
 
-        x = Leaky_Relu(x, alpha=0.2, name='relu_2')
+        x = Leaky_Relu(x, alpha=0.2, name=str(uuid.uuid4()))
         x = self.conv_1(x)
 
         return x
@@ -181,13 +182,13 @@ class AdainResBlock(tf.keras.layers.Layer):
 
     def residual(self, x, s):
         x = self.adain_0([x, s])
-        x = Leaky_Relu(x, alpha=0.2, name='relu_3')
+        x = Leaky_Relu(x, alpha=0.2, name=str(uuid.uuid4()))
         if self.upsample:
             x = nearest_up_sample(x, scale_factor=2)
         x = self.conv_0(x)
 
         x = self.adain_1([x, s])
-        x = Leaky_Relu(x, alpha=0.2, name='relu_4')
+        x = Leaky_Relu(x, alpha=0.2, name=str(uuid.uuid4()))
         x = self.conv_1(x)
 
         return x
@@ -368,8 +369,8 @@ def discriminator_loss(gan_type, real_logit, fake_logit):
         fake_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(labels=tf.zeros_like(fake_logit), logits=fake_logit))
 
     if gan_type == 'hinge' :
-        real_loss = tf.reduce_mean(Relu(1.0 - real_logit, name='relu1'))
-        fake_loss = tf.reduce_mean(Relu(1.0 + fake_logit, name='relu2'))
+        real_loss = tf.reduce_mean(Relu(1.0 - real_logit, name=str(uuid.uuid4())))
+        fake_loss = tf.reduce_mean(Relu(1.0 + fake_logit, name=str(uuid.uuid4())))
 
     return real_loss + fake_loss
 

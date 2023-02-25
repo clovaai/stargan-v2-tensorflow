@@ -11,7 +11,7 @@ Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 from ops import *
 from tensorflow.keras import Sequential
 import numpy as np
-
+import uuid
 
 class Generator(tf.keras.Model):
     def __init__(self, img_size=256, img_ch=3, style_dim=64, max_conv_dim=512, sn=False, name='Generator'):
@@ -30,7 +30,7 @@ class Generator(tf.keras.Model):
         self.to_rgb = Sequential(
             [
                 InstanceNorm(name='ins_norm'),
-                Leaky_Relu(alpha=0.2, name='relu_15'),
+                Leaky_Relu(alpha=0.2, name=str(uuid.uuid4())),
                 Conv(channels=self.img_ch, kernel=1,
                      stride=1, sn=self.sn, name='to_rgb')
             ]
@@ -95,12 +95,12 @@ class MappingNetwork(tf.keras.Model):
         layers = []
         layers += [FullyConnected(units=self.hidden_dim,
                                   sn=self.sn, name='shared_fc')]
-        layers += [Relu(name='relu_12')]
+        layers += [Relu(name=str(uuid.uuid4()))]
 
         for i in range(3):
             layers += [FullyConnected(units=self.hidden_dim,
                                       sn=self.sn, name='shared_fc_' + str(i))]
-            layers += [Relu(name='relu_30')]
+            layers += [Relu(name=str(uuid.uuid4()))]
 
         shared_layers = Sequential(layers)
 
@@ -111,7 +111,7 @@ class MappingNetwork(tf.keras.Model):
             for i in range(3):
                 layers += [FullyConnected(units=self.hidden_dim, sn=self.sn,
                                           name='domain_{}_unshared_fc_{}'.format(n_d, i))]
-                layers += [Relu(name='relu_14')]
+                layers += [Relu(name=str(uuid.uuid4()))]
             layers += [FullyConnected(units=self.style_dim,
                                       sn=self.sn, name='domain_{}_style_fc'.format(n_d))]
 
@@ -166,10 +166,10 @@ class StyleEncoder(tf.keras.Model):
                                 sn=self.sn, name='resblock_' + str(i))]
             ch_in = ch_out
 
-        blocks += [Leaky_Relu(alpha=0.2, name='relu_16')]
+        blocks += [Leaky_Relu(alpha=0.2, name=str(uuid.uuid4()))]
         blocks += [Conv(channels=ch_out, kernel=4, stride=1,
                         pad=0, sn=self.sn, name='conv')]
-        blocks += [Leaky_Relu(alpha=0.2, name='relu_17')]
+        blocks += [Leaky_Relu(alpha=0.2, name=str(uuid.uuid4()))]
 
         shared_layers = Sequential(blocks)
 
@@ -231,11 +231,11 @@ class Discriminator(tf.keras.Model):
 
             ch_in = ch_out
 
-        blocks += [Leaky_Relu(alpha=0.2, name='relu_18')]
+        blocks += [Leaky_Relu(alpha=0.2, name=str(uuid.uuid4()))]
         blocks += [Conv(channels=ch_out, kernel=4, stride=1,
                         pad=0, sn=self.sn, name='conv_0')]
 
-        blocks += [Leaky_Relu(alpha=0.2, name='relu_19')]
+        blocks += [Leaky_Relu(alpha=0.2, name=str(uuid.uuid4()))]
         blocks += [Conv(channels=self.num_domains, kernel=1,
                         stride=1, sn=self.sn, name='conv_1')]
 
