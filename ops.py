@@ -368,8 +368,8 @@ def discriminator_loss(gan_type, real_logit, fake_logit):
         fake_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(labels=tf.zeros_like(fake_logit), logits=fake_logit))
 
     if gan_type == 'hinge' :
-        real_loss = tf.reduce_mean(Relu(1.0 - real_logit))
-        fake_loss = tf.reduce_mean(Relu(1.0 + fake_logit))
+        real_loss = tf.reduce_mean(Relu(1.0 - real_logit, name='relu1'))
+        fake_loss = tf.reduce_mean(Relu(1.0 + fake_logit, name='relu2'))
 
     return real_loss + fake_loss
 
