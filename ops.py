@@ -133,7 +133,7 @@ class ResBlock(tf.keras.layers.Layer):
     def residual(self, x):
         if self.normalize:
             x = self.ins_norm_0(x)
-        x = Leaky_Relu(x, alpha=0.2)
+        x = Leaky_Relu(x, alpha=0.2, name='relu_1')
         x = self.conv_0(x)
 
         if self.downsample:
@@ -141,7 +141,7 @@ class ResBlock(tf.keras.layers.Layer):
         if self.normalize:
             x = self.ins_norm_1(x)
 
-        x = Leaky_Relu(x, alpha=0.2)
+        x = Leaky_Relu(x, alpha=0.2, name='relu_2')
         x = self.conv_1(x)
 
         return x
@@ -181,13 +181,13 @@ class AdainResBlock(tf.keras.layers.Layer):
 
     def residual(self, x, s):
         x = self.adain_0([x, s])
-        x = Leaky_Relu(x, alpha=0.2)
+        x = Leaky_Relu(x, alpha=0.2, name='relu_3')
         if self.upsample:
             x = nearest_up_sample(x, scale_factor=2)
         x = self.conv_0(x)
 
         x = self.adain_1([x, s])
-        x = Leaky_Relu(x, alpha=0.2)
+        x = Leaky_Relu(x, alpha=0.2, name='relu_4')
         x = self.conv_1(x)
 
         return x
