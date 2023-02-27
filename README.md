@@ -52,7 +52,7 @@ python main.py --dataset celebA-HQ_gender --phase train
 
 ### Test
 ```
-python main.py --dataset celebA-HQ_gender --phase test
+python main.py --dataset by_time_zone --phase test
 ```
 
 
@@ -98,3 +98,5 @@ If you find this work useful for your research, please cite our paper:
   year={2020}
 }
 ```
+
+https://stackoverflow.com/questions/34199233/how-to-prevent-tensorflow-from-allocating-the-totality-of-a-gpu-memory

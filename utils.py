@@ -16,6 +16,10 @@ import tensorflow as tf
 import random
 from glob import glob
 
+config = tf.compat.v1.ConfigProto()
+config.gpu_options.allow_growth=True
+sess = tf.compat.v1.Session(config=config)
+
 class Image_data:
 
     def __init__(self, img_size, channels, dataset_path, domain_list, augment_flag):
